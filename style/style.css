@@ -1,0 +1,143 @@
+:root{
+    --paper:#eef1ea;
+    --paper-line:#c9d0c2;
+    --ink:#1f2d3d;
+    --ink-soft:#5a6b73;
+    --ink-faint:#93a3a8;
+    --accent:#c1440e;
+    --card:#f7f8f3;
+    --shadow: rgba(31,45,61,0.12);
+    --today-glow: rgba(193,68,14,0.10);
+    --groupA:#2c5282;
+    --groupB:#a3405a;
+    --ok:#2f6d3f;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      linear-gradient(var(--paper-line) 1px, transparent 1px) 0 0/100% 28px,
+      var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", "Segoe UI", sans-serif;
+    min-height:100vh;
+    padding-bottom:60px;
+  }
+
+  header.topbar{ padding:22px 20px 10px; max-width:1180px; margin:0 auto; }
+  .brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+  .brand .tab{
+    font-family:"IBM Plex Mono", monospace; font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase; background:var(--accent);color:#fff;padding:3px 8px;
+    border-radius:2px; transform:rotate(-1deg);
+  }
+  h1{ font-family:"IBM Plex Mono", monospace; font-weight:600;font-size:26px;
+      margin:6px 0 2px;letter-spacing:-0.01em; }
+  .subtitle{color:var(--ink-soft);font-size:13px;font-family:"IBM Plex Mono", monospace;}
+
+  .dot{width:9px;height:9px;border-radius:50%;flex:none;display:inline-block;}
+  .dot.a{background:var(--groupA);}
+  .dot.b{background:var(--groupB);}
+  .load-status{
+    max-width:1180px;margin:10px auto 0;padding:0 20px;
+    font-family:"IBM Plex Mono", monospace;font-size:12px;color:var(--ink-soft);
+    display:none;
+  }
+  .load-status.show{display:block;}
+  .load-status.err{
+    color:#9c2b1f;background:#fbe6e2;border:1.5px solid #9c2b1f;border-radius:4px;
+    padding:10px 14px;margin-left:20px;margin-right:20px;max-width:1140px;
+  }
+
+  nav.controls{
+    max-width:1180px;margin:14px auto 6px;padding:0 20px;
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .btn{
+    font-family:"IBM Plex Mono", monospace;font-size:13px;
+    border:1.5px solid var(--ink);background:var(--card);color:var(--ink);
+    padding:7px 13px;border-radius:3px;cursor:pointer;transition:all .12s ease;
+  }
+  .btn:hover{background:var(--ink);color:var(--paper);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .btn.primary:hover{background:#a1380b;border-color:#a1380b;}
+  #weekLabel{
+    font-family:"IBM Plex Mono", monospace;font-size:14px;font-weight:600;
+    margin-left:6px;text-transform:capitalize;
+  }
+  .spacer{flex:1;}
+  #searchBox{
+    font-family:"IBM Plex Sans", sans-serif;font-size:13px;
+    border:1.5px solid var(--ink-faint);background:var(--card);
+    padding:7px 10px;border-radius:3px;width:170px;
+  }
+  #searchBox:focus{outline:none;border-color:var(--accent);}
+
+  /* --- sélecteur de groupe --- */
+  .group-filter{ display:flex; gap:2px; border:1.5px solid var(--ink); border-radius:3px; overflow:hidden; }
+  .group-filter button{
+    font-family:"IBM Plex Mono", monospace; font-size:12.5px; border:none;
+    background:var(--card); color:var(--ink); padding:7px 12px; cursor:pointer;
+  }
+  .group-filter button + button{ border-left:1.5px solid var(--ink); }
+  .group-filter button.active{ background:var(--ink); color:var(--paper); }
+
+  main{max-width:1180px;margin:0 auto;padding:14px 20px 0;}
+
+  .grid-wrap{
+    background:var(--card);border:1.5px solid var(--ink);border-radius:4px;
+    overflow-x:auto;box-shadow:4px 4px 0 var(--shadow);
+  }
+  .grid{display:grid;grid-template-columns:56px repeat(5, minmax(150px,1fr));min-width:820px;}
+  .grid .head{
+    position:sticky;top:0;background:var(--ink);color:var(--paper);z-index:2;
+    padding:10px 6px;text-align:center;font-family:"IBM Plex Mono", monospace;
+    font-size:12px;border-right:1px solid rgba(255,255,255,0.15);
+  }
+  .grid .head .dow{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;}
+  .grid .head .dnum{display:block;font-size:17px;font-weight:700;margin-top:2px;}
+  .grid .head.today{background:var(--accent);}
+  .grid .corner{background:var(--ink);}
+
+  .hourcol{border-right:1px solid var(--paper-line);position:relative;}
+  .hourlabel{position:absolute;right:6px;font-family:"IBM Plex Mono", monospace;font-size:10px;color:var(--ink-faint);}
+  .hourslot{height:56px;border-bottom:1px solid var(--paper-line);}
+
+  .daycol{border-right:1px solid var(--paper-line);position:relative;}
+  .daycol.today{background:var(--today-glow);}
+  .daycol .slot{height:56px;border-bottom:1px solid var(--paper-line);}
+  .daycol:last-child{border-right:none;}
+
+  .event{
+    position:absolute;border-radius:3px;padding:4px 6px;
+    font-size:11px;line-height:1.28;overflow:hidden;border-left:4px solid var(--accent);
+    box-shadow:1px 1px 0 var(--shadow);cursor:default;
+  }
+  .event .t{font-family:"IBM Plex Mono", monospace;font-size:9.5px;opacity:.8;}
+  .event .s{font-weight:600;display:block;margin:1px 0;}
+  .event .l{font-size:9.5px;opacity:.75;}
+  .badge{
+    display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9px;
+    font-weight:700; padding:0 4px; border-radius:2px; margin-left:4px; vertical-align:middle;
+  }
+  .badge.a{background:var(--groupA); color:#fff;}
+  .badge.b{background:var(--groupB); color:#fff;}
+
+  footer.legend{max-width:1180px;margin:22px auto 0;padding:0 20px;}
+  .legend h2{
+    font-family:"IBM Plex Mono", monospace;font-size:13px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px;
+    border-bottom:1px solid var(--paper-line);padding-bottom:6px;
+  }
+  .legend-grid{display:flex;flex-wrap:wrap;gap:8px 14px;}
+  .legend-item{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-soft);}
+  .legend-item .swatch{width:11px;height:11px;border-radius:2px;flex:none;}
+
+  .empty-week{padding:60px 20px;text-align:center;color:var(--ink-faint);font-family:"IBM Plex Mono", monospace;}
+  .empty-state{padding:60px 20px;text-align:center;color:var(--ink-soft);font-family:"IBM Plex Mono", monospace;font-size:13px;}
+
+  @media (max-width:640px){
+    h1{font-size:21px;}
+    .grid{grid-template-columns:42px repeat(5, minmax(130px,1fr));}
+    #searchBox{width:120px;}
+  }

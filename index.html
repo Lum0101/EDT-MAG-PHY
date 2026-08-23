@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style/style.css">
+<title>Emploi du temps</title>
+</head>
+<body>
+<header class="topbar">
+  <h1>Emploi du temps</h1>
+  <div class="subtitle" id="rangeInfo">Chargement de <span class="dot a"></span> grpa.ics et <span class="dot b"></span> grpb.ics…</div>
+</header>
+
+<div class="load-status" id="loadStatus"></div>
+
+<nav class="controls">
+  <button class="btn" id="prevBtn">&larr; Semaine préc.</button>
+  <button class="btn primary" id="todayBtn">Aujourd'hui</button>
+  <button class="btn" id="nextBtn">Semaine suiv. &rarr;</button>
+  <span id="weekLabel"></span>
+  <div class="spacer"></div>
+  <div class="group-filter" id="groupFilter">
+    <button data-g="all" class="active">Tous</button>
+    <button data-g="A">Groupe A</button>
+    <button data-g="B">Groupe B</button>
+  </div>
+  <input type="text" id="searchBox" placeholder="Filtrer un cours...">
+</nav>
+
+<main>
+  <div class="grid-wrap">
+    <div class="grid" id="grid"></div>
+  </div>
+</main>
+
+<!--
+<footer class="legend">
+  <h2>Matières</h2>
+  <div class="legend-grid" id="legendGrid"></div>
+</footer>
+-->
+
+<script src="script/script.js"></script>
+</body>
+</html>
