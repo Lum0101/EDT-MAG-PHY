@@ -361,7 +361,12 @@ function openEventModal(e, isPast, timeStr){
 function closeEventModal(){
   document.getElementById('eventModal').classList.remove('show');
 }
-document.getElementById('eventModalClose').addEventListener('click', closeEventModal);
+//document.getElementById('eventModalClose').addEventListener('click', closeEventModal);
+box.addEventListener('pointerup', (event) => {
+  // Évite les déclenchements accidentels pendant un scroll
+  if (event.pointerType === 'mouse' && event.button !== 0) return;
+  openEventModal(e, isPast, timeStr);
+});
 document.getElementById('eventModal').addEventListener('click', e=>{
   if(e.target.id === 'eventModal') closeEventModal();
 });
