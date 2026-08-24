@@ -314,12 +314,7 @@ function render(){
       else if(e.group === "B") badge = '<span class="badge b">B</span>';
       box.innerHTML = `<span class="t">${timeStr}${e.type ? ' · '+e.type : ''}${badge}</span><span class="s">${e.base}</span>${e.location ? `<span class="l">${e.location.split(',')[0]}</span>` : ''}`;
       box.title = `${e.summary}\n${timeStr}\n${e.location||''}`;
-      box.setAttribute('role', 'button');
-      box.setAttribute('tabindex', '0');
-      box.addEventListener('pointerup', function(event) {
-        event.preventDefault();
-        openEventModal(e, isPast, timeStr);
-      });
+      box.addEventListener('click', ()=>openEventModal(e, isPast, timeStr));
       dayCol.appendChild(box);
     });
     gridEl.appendChild(dayCol);
@@ -366,12 +361,7 @@ function openEventModal(e, isPast, timeStr){
 function closeEventModal(){
   document.getElementById('eventModal').classList.remove('show');
 }
-//document.getElementById('eventModalClose').addEventListener('click', closeEventModal);
-box.addEventListener('pointerup', (event) => {
-  // Évite les déclenchements accidentels pendant un scroll
-  if (event.pointerType === 'mouse' && event.button !== 0) return;
-  openEventModal(e, isPast, timeStr);
-});
+document.getElementById('eventModalClose').addEventListener('click', closeEventModal);
 document.getElementById('eventModal').addEventListener('click', e=>{
   if(e.target.id === 'eventModal') closeEventModal();
 });
