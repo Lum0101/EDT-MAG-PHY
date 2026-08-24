@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" sizes="16x16 32x32 48x48" type="image/png" href="img/logo.png"/>
 <link rel="stylesheet" href="style/style.css">
-<title>Emploi du temps</title>
+<title>Emploi du temps MAG&phi;</title>
 </head>
 <body>
 <header class="topbar">
-  <h1>Emploi du temps</h1>
+  <h1>Emploi du temps MAG&phi; Paris Cité</h1>
   <div class="subtitle" id="rangeInfo">Chargement de <span class="dot a"></span> grpa.ics et <span class="dot b"></span> grpb.ics…</div>
 </header>
 
@@ -19,11 +20,11 @@
   <button class="btn primary" id="todayBtn">Aujourd'hui</button>
   <button class="btn" id="nextBtn">Semaine suiv. &rarr;</button>
   <span id="weekLabel"></span>
-  <div class="spacer"></div>
+  <div class="spacer" id="spacerHead"></div>
   <div class="group-filter" id="groupFilter">
     <button data-g="all" class="active">Tous</button>
-    <button data-g="A">Groupe A</button>
-    <button data-g="B">Groupe B</button>
+    <button data-g="A" id="btnA">Groupe A</button>
+    <button data-g="B" id="btnB">Groupe B</button>
   </div>
   <input type="text" id="searchBox" placeholder="Filtrer un cours...">
 </nav>
@@ -33,6 +34,14 @@
     <div class="grid" id="grid"></div>
   </div>
 </main>
+
+<div class="modal-backdrop" id="eventModal">
+  <div class="modal-card" id="eventModalCard" role="dialog" aria-modal="true">
+    <button class="modal-close" id="eventModalClose" aria-label="Fermer">&times;</button>
+    <div class="modal-body" id="eventModalBody"></div>
+  </div>
+</div>
+
 
 <!--
 <footer class="legend">

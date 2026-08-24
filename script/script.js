@@ -77,14 +77,8 @@ function parseICS(text){
 }
 
 /* ---------- couleurs / matière ---------- */
-const PALETTE = [
-  {bg:"#e4ecf5", ink:"#2c5282"},{bg:"#f6e4d6", ink:"#b5541d"},
-  {bg:"#e3efe0", ink:"#3f7a45"},{bg:"#f0e2ef", ink:"#8a3b82"},
-  {bg:"#fdf0cf", ink:"#a3781a"},{bg:"#f5e0e2", ink:"#a3405a"},
-  {bg:"#dcefee", ink:"#2a7a75"},{bg:"#e9e6f7", ink:"#5b4ea3"},
-  {bg:"#eae2d4", ink:"#6b5a3a"},{bg:"#e0e9ea", ink:"#3d5a5e"},
-];
 const PAST_COLOR = {bg:"#e6e6e1", ink:"#8b8b83"};
+const GOLDEN_ANGLE = 137.508; // écart angulaire maximisant la distinction entre teintes successives
 
 function parseCourse(summary){
   const m = summary.match(/^(.*?)[\s]*(CMTD|CM|TD|TP)(\d+)?(-\d+)?\s*$/i);
@@ -93,8 +87,13 @@ function parseCourse(summary){
 }
 function colorFor(base){
   if(!(base in courseColors)){
-    const idx = Object.keys(courseColors).length % PALETTE.length;
-    courseColors[base] = PALETTE[idx];
+    const idx = Object.keys(courseColors).length;
+    // décale le point de départ pour éviter de commencer pile sur le rouge/accent
+    const hue = (idx * GOLDEN_ANGLE + 30) % 360;
+    courseColors[base] = {
+      bg: `hsl(${hue.toFixed(1)}, 46%, 90%)`,
+      ink: `hsl(${hue.toFixed(1)}, 55%, 30%)`,
+    };
   }
   return courseColors[base];
 }
@@ -315,6 +314,7 @@ function render(){
       else if(e.group === "B") badge = '<span class="badge b">B</span>';
       box.innerHTML = `<span class="t">${timeStr}${e.type ? ' · '+e.type : ''}${badge}</span><span class="s">${e.base}</span>${e.location ? `<span class="l">${e.location.split(',')[0]}</span>` : ''}`;
       box.title = `${e.summary}\n${timeStr}\n${e.location||''}`;
+      box.addEventListener('click', ()=>openEventModal(e, isPast, timeStr));
       dayCol.appendChild(box);
     });
     gridEl.appendChild(dayCol);
@@ -333,6 +333,41 @@ function render(){
     gridEl.appendChild(empty);
   }
 }
+
+/* ---------- modal détail d'un cours ---------- */
+function groupLabel(g){
+  if(g === "A") return "Groupe A uniquement";
+  if(g === "B") return "Groupe B uniquement";
+  return "Groupes A et B";
+}
+function openEventModal(e, isPast, timeStr){
+  const body = document.getElementById('eventModalBody');
+  const c = isPast ? PAST_COLOR : e.color;
+  body.className = 'm-body' + (isPast ? ' past' : '');
+  let badge = "";
+  if(e.group === "A") badge = '<span class="badge a">A</span>';
+  else if(e.group === "B") badge = '<span class="badge b">B</span>';
+  body.innerHTML = `
+    <div style="font-size:13px;color:#5a6b73;display:flex;align-items:center;flex-wrap:wrap;"><span style="background:${c.ink};display:inline-block;width:13px;height:13px;border-radius:3px;flex:none;
+  vertical-align:middle;margin-right:6px;"></span>${fmtDayMonth(e.start)} · ${timeStr}${e.type ? ' · '+e.type : ''}${badge}${isPast ? ' · déjà passé' : ''}</div>
+    <div style="color:#c1440e;font-weight:700;font-size:19px;margin:8px 0 12px;line-height:1.3;">${e.summary}</div>
+    ${e.location ? `<div style=" display:flex;gap:8px;align-items:baseline;
+  font-size:13.5px;color:var(--ink);margin-top:8px;"><span class="m-label">Salle:</span><span>${e.location}</span></div>` : ''}
+    <div style=" display:flex;gap:8px;align-items:baseline;
+  font-size:13.5px;color:var(--ink);margin-top:8px;"><span class="m-label">Groupe:</span><span>${groupLabel(e.group)}</span></div>
+  `;
+  document.getElementById('eventModal').classList.add('show');
+}
+function closeEventModal(){
+  document.getElementById('eventModal').classList.remove('show');
+}
+document.getElementById('eventModalClose').addEventListener('click', closeEventModal);
+document.getElementById('eventModal').addEventListener('click', e=>{
+  if(e.target.id === 'eventModal') closeEventModal();
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape') closeEventModal();
+});
 
 /* ---------- navigation ---------- */
 function shiftDay(delta){
